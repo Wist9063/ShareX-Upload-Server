@@ -6,7 +6,7 @@
   "maxUploadSize": 50,
   "markdown": true,
   "port": 80,
-  "title": "ShareX Image Server PROD",
+  "title": "ShareX Image Server EXAMPLE",
   "secure": true,
   "fileNameLength": 4,
   "shortUrlLength": 3,

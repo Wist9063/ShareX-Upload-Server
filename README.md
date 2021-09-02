@@ -17,17 +17,20 @@ retrofitted for production use
 - ### Password protected gallery page (password is admin key)
 - ### Showcase images (image display pages that show metadata for photography)
 
-## Installation (Ubuntu 16.04 Server)
+## Installation (Ubuntu 16.04 Server or later)
 ```sh
 git clone https://github.com/Wist9063/ShareX-Upload-Server.git
 cd ShareX-Upload-Server
 chmod +x install.sh
 ./install.sh
+
+cd src
+mv "config.EXAMPLE.json" "config.json"
 ```
 
 ## Configuration
 
-In the files you downloaded from this repository, you will see a file called `config.json`.
+In the files you downloaded from this repository, you will see a file called `config.EXAMPLE.json`. Change the name `config.EXAMPLE.json` to `config.json`.
 You must fill this out for the webserver to work properly. Below explains the configuration file and what each part does
 
 ```js
@@ -39,7 +42,7 @@ You must fill this out for the webserver to work properly. Below explains the co
   "maxUploadSize": 50, // max upload size for non-admins using regular key in MB
   "markdown": true, // enables markdown rendering (upload whole .md file for render)
   "port": 80, // port to listen on
-  "title": "ShareX Image Server", // Title text on header
+  "title": "ShareX Image Server", // Title text on page header
   "secure": true, // Whether or not you want https. (make sure key and cert.pem are in src directory)
   "fileNameLength": 4, // File name length
   "shortUrlLength": 3, // File name length for short URLs
@@ -68,13 +71,13 @@ You must fill this out for the webserver to work properly. Below explains the co
 
 ## Running The Server
 Once you've properly configured your server, you can run `node index.js` in the src folder to start the server.
-You can keep your server running forever if you use a process manager, like pm2. pm2 installs along with your server if you used the install.sh script to install your server. Otherwise you can run `npm i -g pm2` to install pm2. Then you can run your server by running `pm2 start index.js --env `, and monitor logs and such using `pm2 monit`
+You can keep your server running forever if you use a process manager, like pm2. pm2 installs along with your server if you used the install.sh script to install your server. Otherwise you can run `npm i -g pm2` to install pm2. Then you can run your server by running `pm2 start index.js --env production`, and monitor logs and such using `pm2 monit`
 
 ### Note: Nginx/reverse proxy users
 If you're configuring this webserver to run through an Nginx reverse proxy, make sure you add these lines to your reverse proxy config
 ```
   location / {
-   proxy_pass http://localhost:5788;
+   proxy_pass http://localhost:[YOUR PORT CONFIG];
    proxy_set_header Upgrade $http_upgrade;
    proxy_set_header Connection 'upgrade';
    proxy_set_header Host $host;

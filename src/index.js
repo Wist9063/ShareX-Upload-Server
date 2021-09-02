@@ -1,6 +1,6 @@
 /* eslint-disable global-require */
 /* eslint-disable no-console */
-const ShareXAPI = require(`${__dirname}/server/app`);
+const ShareXAPI = require('./server/app');
 /** Setting definitions for the config file and server class */
 let c;
 let server;
@@ -23,16 +23,16 @@ console.log(`\x1b[31m
 
 /** Determines whether or not to use the test config or not.
  * Test env config does not get pushed to git.
- * Production env config to be created and used on production server.
+ * Add production to NODE_ENV in order to use config.json. Will default to config.test.json without it.
  * @returns {void}
  */
 async function loadConfig() {
-    if (process.env.NODE_ENV === 'production') {
-        c = require(`${__dirname}/config.json`);
-    } else c = require(`${__dirname}/config.test.json`);
+    process.env.NODE_ENV === 'production'
+        ? c = require(`${__dirname}/config.test.json`)
+        : c = require(`${__dirname}/config.json`);
 }
 
-loadConfig().then(() => {
+loadConfig().then(async () => {
     /** Starting server using the selected config file */
     server = new ShareXAPI(c);
 });

@@ -4,4 +4,5 @@ src/config.json
 src/package-lock.json
 node_modules
 src/db.json
+src/server/uploads
 package-lock.json
