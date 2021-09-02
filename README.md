@@ -1,6 +1,9 @@
 <img src="https://img.shields.io/badge/Hosting-Hyper%20Expert-blue?style=flat-square&logo=server-fault&logo-color=white&link=https://qoilo.com/hosting" alt="Hosting"> <img src="https://img.shields.io/badge/Support-Discord-blue?style=flat-square&logo=discord&color=7289DA&logoColor=7289DA&link=https://discord.gg/h8qthfS" alt="Discord">  <img src="https://img.shields.io/badge/Version-4.5.2-red?style=flat-square&link=https://qoilo.com/hosting" alt="Version">
 
-# ShareS - A Nodejs ShareX Upload Server
+# ShareS - A Nodejs ShareX Upload Server 
+Made by [Tanner Reynolds](https://github.com/TannerReynolds) forked by me. 
+
+retrofitted for production use 
 ## Features
 
 - ### Image/Video/General file uploading
@@ -16,29 +19,15 @@
 
 ## Installation (Ubuntu 16.04 Server)
 ```sh
-git clone https://github.com/TannerReynolds/ShareX-Upload-Server.git
+git clone https://github.com/Wist9063/ShareX-Upload-Server.git
 cd ShareX-Upload-Server
 chmod +x install.sh
 ./install.sh
 ```
 
-## Docker
-```sh
-docker build -t sharex-upload-server .
-docker run --name "sharex-upload-server" -d \
-    -v $(pwd)/src/config.json:/usr/src/app/config.json \
-    -v $(pwd)/src/db.json:/usr/src/app/db.json \
-    -v $(pwd)/src/server/uploads/:/usr/src/app/server/uploads/ \
-    -p 8000:80 -p 8443:443 \
-    sharex-upload-server
-docker logs -f sharex-upload-server
-```
-
-`/src/config.json` will be the config file used if you used the above command to start the server. The web UI will be available on `https://server-ip:8443` if https is enabled, and `http://server-ip:8000` if it isn't.
-
 ## Configuration
 
-In the files you downloaded from this repository, you will see a file called `config.json` 
+In the files you downloaded from this repository, you will see a file called `config.json`.
 You must fill this out for the webserver to work properly. Below explains the configuration file and what each part does
 
 ```js
@@ -79,7 +68,7 @@ You must fill this out for the webserver to work properly. Below explains the co
 
 ## Running The Server
 Once you've properly configured your server, you can run `node index.js` in the src folder to start the server.
-You can keep your server running forever if you use a process manager, like pm2. pm2 installs along with your server if you used the install.sh script to install your server. Otherwise you can run `npm i -g pm2` to install pm2. Then you can run your server by running `pm2 start index.js`, and monitor logs and such using `pm2 monit`
+You can keep your server running forever if you use a process manager, like pm2. pm2 installs along with your server if you used the install.sh script to install your server. Otherwise you can run `npm i -g pm2` to install pm2. Then you can run your server by running `pm2 start index.js --env `, and monitor logs and such using `pm2 monit`
 
 ### Note: Nginx/reverse proxy users
 If you're configuring this webserver to run through an Nginx reverse proxy, make sure you add these lines to your reverse proxy config
@@ -122,34 +111,6 @@ In addition to being able to use any password you want for puploads, if you type
  - Click the image to view image's metadata like camera, lens, iso, shutter speed, etc.
  - Requires extra software to be installed to your server, called [Exiftool](https://www.sno.phy.queensu.ca/~phil/exiftool/index.html) to read metadata from uploaded images. The install file will automatically install this software on ubuntu.
  - Windows servers using this feature wil need the Windows executable for exiftool and it will need to be added to your environment variables or ShareS will throw errors on upload and return 404s
-
-## Using with Flameshot (Linux)
-In order to use ShareS with [Flameshot](https://github.com/flameshot-org/flameshot) you will need to use a simple script, here is an example:
-```bash
-key="YourPassword"
-# Only needed for multi-domain support, if you only have one simply set the url
-# 2 lines below to url="https://your.domain/api/files"
-urls=("https://example.com/api/files" "https://example.org/api/files")
-url=${urls[$RANDOM % ${#urls[@]}]}
-
-temp_file="/tmp/screenshot.png"
-
-# Run flameshot --help for options
-flameshot gui -r > $temp_file
-
-# For some reason flameshot always seems to exit with 0 even when aborting the process
-# so we had to find a way around that.
-if [[ $(file --mime-type -b $temp_file) != "image/png" ]]; then
-	rm $temp_file
-  notify-send "Screenshot aborted" -a "Flameshot" && exit 1
-fi
-
-image_url=$(curl -X POST -F "fdata=@"$temp_file -F "key="$key -v "$url" 2>/dev/null)
-echo -n $image_url | xclip -sel c
-notify-send "Image URL copied to clipboard" "$image_url" -a "Flameshot" -i $temp_file
-rm $temp_file
-```
-When running this script simply hit enter when you're satisfied with your image, Flameshot will then save the image to your clipboard which will then be replaced with the image URL once it's uploaded. For the best results I suggest disabling notifications in the Flameshot app.
 
 ## Contributing
 ### Pull Requests

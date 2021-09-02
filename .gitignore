@@ -1,5 +1,6 @@
 src/node_modules
 src/config.real.json
+src/config.json
 src/package-lock.json
 node_modules
 src/db.json

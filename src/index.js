@@ -22,13 +22,14 @@ console.log(`\x1b[31m
   ======================================================================\x1b[0m`);
 
 /** Determines whether or not to use the test config or not.
- * Test env config does not get pushed to git
+ * Test env config does not get pushed to git.
+ * Production env config to be created and used on production server.
  * @returns {void}
  */
 async function loadConfig() {
-    process.argv[2] === '-test'
-        ? c = require(`${__dirname}/config.real.json`)
-        : c = require(`${__dirname}/config.json`);
+    if (process.env.NODE_ENV === 'production') {
+        c = require(`${__dirname}/config.json`);
+    } else c = require(`${__dirname}/config.test.json`);
 }
 
 loadConfig().then(() => {
