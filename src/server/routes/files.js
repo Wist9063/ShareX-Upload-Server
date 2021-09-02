@@ -1,4 +1,8 @@
+/* eslint-disable no-shadow */
+/* eslint-disable no-param-reassign */
+/* eslint-disable no-use-before-define */
 /* eslint-disable no-lonely-if */
+
 const formidable = require('formidable');
 const fs = require('fs-extra');
 const { Remarkable } = require('remarkable');
@@ -17,7 +21,8 @@ async function files(req, res) {
     const protocol = this.protocol();
     // eslint-disable-next-line no-shadow
     form.parse(req, (err, fields, files) => {
-        let userIP = req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.socket.remoteAddress || req.connection.socket.remoteAddress.split(',')[0]; userIP = userIP.split(',')[0];
+        let userIP = req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.socket.remoteAddress || req.connection.socket.remoteAddress.split(',')[0];
+        userIP = userIP.split(',')[0];
         const authKey = fields.key;
         let usingUploader = false;
         if (files.fdataUploader && !fields.key) {
@@ -67,12 +72,7 @@ async function files(req, res) {
         fields.pupload
             ? newpath = `${__dirname}/../passwordUploads/${this.c.dateURLPath === true ? `${getDate('year')}/${getDate('month')}/${getDate('day')}/` : ''}${fileName}.${fileExt}`
             : newpath = `${__dirname}/../uploads/${this.c.dateURLPath === true ? `${getDate('year')}/${getDate('month')}/${getDate('day')}/` : ''}${fileName}.${fileExt}`;
-        let returnedFileName;
-        if (!fileExt.includes('png') && !fileExt.includes('jpg') && !fileExt.includes('jpeg') && !fileExt.includes('md') && !fields.pupload) {
-            returnedFileName = `${fileName}.${fileExt}`;
-        } else {
-            returnedFileName = fileName;
-        }
+        let returnedFileName = `${fileName}.${fileExt}`;
         if (fields.showCase) {
             fields.showCase = true;
         }
@@ -158,7 +158,7 @@ async function files(req, res) {
             if (fileExt === 'png' || fileExt === 'jpg' || fileExt === 'gif' || fileExt === 'jpeg') {
                 returnedFileName = `${showCaseFile}.html`;
                 fs.move(oldpath, newpath, () => {
-                    fs.readFile(newpath, 'utf-8', (err, data) => {
+                    fs.readFile(newpath, 'utf-8', () => {
                         exif(newpath, (err, obj) => {
                             if (!obj['camera model name']) obj['camera model name'] = 'N/A';
                             if (!obj['f number']) obj['f number'] = 'N/A';
@@ -174,8 +174,8 @@ async function files(req, res) {
                             const focal = obj['focal length'].replace(/<|>|&lt;|&gt;/gm, '');
                             const dims = obj['image size'].replace(/<|>|&lt;|&gt;/gm, '');
                             const lens = obj['lens id'].replace(/<|>|&lt;|&gt;/gm, '');
-                            let width = parseInt(dims.split('x')[0]);
-                            let height = parseInt(dims.split('x')[1]);
+                            let width = parseInt(dims.split('x')[0], 10);
+                            let height = parseInt(dims.split('x')[1], 10);
                             if (height > 700) {
                                 const magicNumber = height / 700;
                                 height /= magicNumber;
@@ -187,8 +187,6 @@ async function files(req, res) {
                                 ejs.renderFile(`${__dirname}/../views/photoShowCase.ejs`, {
                                     camera,
                                     fstop,
-                                    fstop,
-                                    shutter,
                                     shutter,
                                     iso,
                                     focal,
