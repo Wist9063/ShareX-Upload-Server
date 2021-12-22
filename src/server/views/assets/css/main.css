@@ -1,0 +1,156 @@
+:root {
+    --dark-dark: #26171b;
+    --dark-med: #3a1d25;
+    --dark-light: #4d202d;
+    --dark-text: #f0f0f0;
+    --dark-hoverBackground: rgba(0, 0, 0, 0.75);
+  }
+
+html, body {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  overflow: hidden;
+  margin: 0;
+  background: black;
+  color: var(--dark-text);
+  font-family: 'Courier New', Courier, monospace;
+  position: relative;
+}
+
+h1,
+h2,
+h3 {
+  font-family: 'Courier New', Courier, monospace;
+}
+h1 {
+  font-size: 2em;
+}
+
+p {
+  padding: 0; 
+  margin: 0;
+  color: var(--light-text);
+}
+
+div.info {
+    display: flex;
+}
+div.info > div.name {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: left;
+  }
+
+@media screen and (max-width: 768px) {
+    div.info, div.name {
+      flex-direction: column;
+      align-items: center;
+      align-content: center;
+    }
+}
+
+img.avatar {
+    width: 8em;
+    height: 8em;
+    border-radius: 50%;
+    margin: 1em;
+}
+
+@media screen and (max-width: 768px) {
+    div.avatar-name, div.name {
+      flex-direction: column;
+      align-items: center;
+      align-content: center;
+    }
+}
+
+div.bg {
+    width: 100%;
+    height: 100vh;
+    filter: brightness(50%);
+    overflow: hidden;
+    position: relative;
+}
+
+video {
+  height: 100%;
+  width: 177.77777778vh; /* 100 * 16 / 9 */
+  min-width: 100%;
+  min-height: 56.25vw; /* 100 * 9 / 16 */
+  position: absolute;
+  left: 50%; /* % of surrounding element */
+  top: 50%;
+  transform: translate(-50%, -50%); /* % of current element */
+  pointer-events: none;
+}
+
+div.info {
+    position: absolute;
+    z-index: 999;
+    text-align: center;
+    vertical-align: middle;
+}
+
+div.name > h1, div.name > h2 {
+    font-weight: normal;
+    padding: 0;
+    margin: 0;
+}
+
+.socials {
+    display: flex;
+    align-content: center;
+    align-items: center;
+}
+.socials > * {
+    margin-right: 0.35em;
+}
+
+.social {
+  display: inline-block;
+  font-size: 2em;
+  filter: brightness(100%);
+}
+
+.social:hover {
+  filter: brightness(30%);
+}
+
+img.social {
+  width: 1.25em;
+  height: 1.25em;
+}
+
+a, a:visited, a:link, a:hover, a:active {
+    color: var(--dark-text);color: var(--light-text);
+}
+
+a.clean {
+  text-decoration: none;
+}
+
+.socials > *:first-child {
+  margin-left: 0.26em;
+}
+
+div.src {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+}
+
+i {
+  margin-top: 0.3em;
+}
+
+div.spotify {
+  position: absolute;
+  bottom: 8px;
+  left: 8px;
+}
