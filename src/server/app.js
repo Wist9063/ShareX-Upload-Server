@@ -108,6 +108,7 @@ class ShareXAPI {
         });
         this.app.use((req, res, next) => {
             if (req.method === 'GET') {
+                res.set('Cache-control', 'public, max-age=345600');
                 const userIP = req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.socket.remoteAddress || req.connection.socket.remoteAddress;
                 const file = req.path;
                 // Not ignoring these files causes bloat in the db
